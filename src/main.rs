@@ -1,5 +1,12 @@
+use clap::Parser;
 
+
+mod cli;
 
 fn main() {
-    println!("Hello, Vigil");
+    let args = cli::Args::parse();
+
+    println!("{:#?}",args.path());
+
+    //println!("Hello, Vigil");
 }
