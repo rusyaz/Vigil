@@ -1,11 +1,12 @@
-use std::any::type_name_of_val;
-
-use clap::Parser;
 
 mod config;
 mod cli;
+mod web;
 
-fn main() -> anyhow::Result<()> {
+
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
 
     let args = cli::Args::parse();
     let path = args.path();
@@ -13,11 +14,21 @@ fn main() -> anyhow::Result<()> {
     let conf = config::Config::new(path)?;
     let sites = conf.get_sites(); 
 
-    println!("{}",type_name_of_val(&sites));
-
+    let cr = web::Checker::new(sites)?;
+    
     for st in sites {
-        println!("{}",st);
+        let resp = cr.check_site(st).await?;
     }
+    
+
+
+
+
+    
+
+    
+    
+
 
      Ok(())
 

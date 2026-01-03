@@ -15,7 +15,7 @@ pub struct Config {
 
 impl Config {
 
-    pub fn new(pt: &path::Path) -> anyhow::Result<Self>{
+    pub fn new(pt: &path::Path) -> anyhow::Result<Self> {
         let file = fs::read_to_string(pt).with_context(|| format!("failed to open config file {}", pt.display()))?;
 
         let config : Config = serde_yaml::from_str(&file).context("failed to parse config file.")?;

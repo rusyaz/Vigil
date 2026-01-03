@@ -13,6 +13,10 @@ pub struct Args {
 
 impl Args {
 
+    pub fn parse() -> Self{
+        <Self as clap::Parser>::parse()
+    }
+
      pub fn path(&self) -> &path::PathBuf {
         &self.file
     } 
@@ -22,9 +26,9 @@ fn extension(ph: &str) -> Result<path::PathBuf,String> {
 
     let path = path::Path::new(ph);
     
-    if !path.exists() {
+    if !path.is_file() {
         return Err(format!("File '{}' does not exist.",path.display()));
-    }
+    } 
 
     if path.extension().is_none_or(|ext| ext != "yaml") {
         return Err(format!("File '{}' must have .yaml extension\n\
