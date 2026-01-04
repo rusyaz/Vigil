@@ -14,22 +14,12 @@ async fn main() -> anyhow::Result<()> {
     let conf = config::Config::new(path)?;
     let sites = conf.get_sites(); 
 
-    let cr = web::Checker::new(sites)?;
-    
-    for st in sites {
-        let resp = cr.check_site(st).await?;
+    let cr = web::Checker::new(sites);
+    let result = cr.check_all_sites().await;
+
+    for r in result {
+        println!("{}:{}",r.0,r.1);
     }
-    
-
-
-
-
-    
-
-    
-    
-
-
-     Ok(())
+    Ok(())
 
 }
