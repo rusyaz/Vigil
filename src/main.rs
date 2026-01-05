@@ -13,13 +13,17 @@ async fn main() -> anyhow::Result<()> {
 
     let conf = config::Config::new(path)?;
     let sites = conf.get_sites(); 
+    let timout = conf.get_timeout();
 
-    let cr = web::Checker::new(sites);
-    let result = cr.check_all_sites().await;
 
-    for r in result {
-        println!("{}:{}",r.0,r.1);
+    let cr = web::Checker::new(sites,timout);
+    
+    for st in sites {
+        let resp = cr.check_site(st).await?;
+        println!("{resp}");
     }
-    Ok(())
+    
+
+     Ok(())
 
 }

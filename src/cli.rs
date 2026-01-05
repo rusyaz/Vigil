@@ -9,6 +9,8 @@ pub struct Args {
     #[arg(short,long,value_parser = extension, required = true)]
     file: path::PathBuf,
 
+    #[arg(short,long)]
+    output: Option<String>
 }
 
 impl Args {
@@ -19,7 +21,7 @@ impl Args {
 
      pub fn path(&self) -> &path::PathBuf {
         &self.file
-    } 
+    }
 } 
 
 fn extension(ph: &str) -> Result<path::PathBuf,String> {
