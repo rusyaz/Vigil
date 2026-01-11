@@ -22,13 +22,15 @@ impl Checker {
         } 
     }
 
-    pub async fn check_site(&self, site: &str) -> anyhow::Result<CheckResult> {
+    // Unused for now. The Checker operates on multiple sites.
+    
+    /*   pub async fn check_site(&self, site: &str) -> anyhow::Result<CheckResult> {
         let resp = self.client.get(site)
             .timeout(time::Duration::from_millis(self.timeout))
             .send()
             .await?;
         Ok(CheckResult::from_response(resp))
-    }   
+    }   */
 
     pub async fn check_all_sites(&self) -> Vec<CheckResult> {
         let futures = self.sites.iter().map(|site|{

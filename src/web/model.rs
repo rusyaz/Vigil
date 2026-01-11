@@ -11,13 +11,7 @@ pub struct CheckResult {
 
 
 impl CheckResult {
- /*   pub fn new(rsp: Result<Response,Error>) -> Self {
-        match rsp {
-            Ok(resp) =>Self::from_response(resp),
-            Err(err) =>Self::from_error(err, site),
-        }  
-    } */
-
+ 
     pub fn from_response(resp: Response) -> CheckResult {
         if resp.status().is_success(){
             return CheckResult{
@@ -65,9 +59,9 @@ impl fmt::Display for CheckResult {
         write!(
             f,
             "[{}] {}\n    {}",
-            self.status,   // красивый статус с эмодзи
-            self.url,      // URL сайта
-            self.message   // текстовое сообщение
+            self.status,   
+            self.url,      
+            self.message   
         )
     }
 }

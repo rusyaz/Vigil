@@ -18,9 +18,10 @@ async fn main() -> anyhow::Result<()> {
 
     let cr = web::Checker::new(sites,timout);
     
-    for st in sites {
-        let resp = cr.check_site(st).await?;
-        println!("{resp}");
+    let test = cr.check_all_sites().await;
+
+    for tt in test {
+        println!("{}",tt);
     }
     
 
