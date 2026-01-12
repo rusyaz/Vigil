@@ -17,7 +17,7 @@ impl Args {
         <Self as clap::Parser>::parse()
     }
 
-     pub fn path(&self) -> &path::PathBuf {
+     pub fn path(&self) -> &path::Path {
         &self.file
     }
 } 

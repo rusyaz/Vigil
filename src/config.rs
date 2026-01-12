@@ -31,22 +31,18 @@ impl Config {
              Please provide at least one site URL, e.g. ['https://example.com'].");
         }
 
-        if self.timeout < 1000 || self.timeout > 10_000 {
-            anyhow::bail!("Validation error: 'timeout' has invalid value {}. \
-             Allowed range is 1000..=10000 ms (1–10 секунд).",
-            self.timeout)
-
+        if self.timeout != 0 && !(1000..=10_000).contains(&self.timeout) {
+           anyhow::bail!(
+               "Validation error: 'timeout' has invalid value {}. \
+               Allowed range is 1000..=10000 ms (1–10 секунд), or 0 to disable timeout.",
+               self.timeout)
         }
         Ok(())
     } 
 
-    pub fn get_sites(&self) -> &[String]{
-        &self.sites
-    }
-
-    pub fn get_timeout(&self) -> u64 {
-        self.timeout
-    }
+    pub fn into_parts(self) -> (Vec<String>,u64) {
+        (self.sites,self.timeout)
+    } 
 
     
 }
