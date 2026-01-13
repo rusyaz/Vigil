@@ -1,6 +1,9 @@
-
+use std::io::Write;
 use std::path;
+use std::fs;
+
 use anyhow;
+use chrono;
 
 use crate::web;
 use crate::config;
@@ -24,7 +27,29 @@ impl App {
     }
 
     pub async fn run(&self) -> Vec<web::CheckResult>{
-        self.checker.check_all_sites().await 
+        let results = self.checker.check_all_sites().await;
+        self.logging(&results);
+        results
+    }
+
+    fn logging(&self,results: &[web::CheckResult]) {
+        fs::create_dir_all("logs").ok();
+
+        let now = chrono::Local::now();
+        let filename = format!("logs/scan_{}",now.format("%Y-%m-%d_%H-%M-%S"));
+        let mut file = fs::File::create(&filename).expect("Cannot create a file.");
+
+        for r in results {
+            let line = format!(
+                "{} | Scanned: {:<30} | Status: {}\n",
+                now.format("%Y-%m-%d %H:%M:%S"),
+                r.url(),
+                r.status()
+            );
+
+            file.write_all(line.as_bytes()).ok();
+        }
+
     }
     
 }

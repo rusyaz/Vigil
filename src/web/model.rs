@@ -52,6 +52,15 @@ impl CheckResult {
 
         }
     }
+
+    pub fn url(&self) -> &str {
+        &self.url
+
+    }
+
+    pub fn status(&self) -> &SiteStatus {
+        &self.status 
+    }
 }
 
 impl fmt::Display for CheckResult {
@@ -78,13 +87,17 @@ pub enum SiteStatus {
 impl fmt::Display for SiteStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            SiteStatus::Available => "✅ Available",
-            SiteStatus::Timeout => "⏱ Timeout",
-            SiteStatus::ServerError => "💥 Server Error",
-            SiteStatus::Other => "❓ Other",
+            SiteStatus::Available =>
+                "\x1b[32m[ ✅ AVAILABLE ]\x1b[0m",
+            SiteStatus::Timeout =>
+                "\x1b[33m[ ⏱ TIMEOUT ]\x1b[0m",
+            SiteStatus::ServerError =>
+                "\x1b[31m[ 💥 SERVER ERROR ]\x1b[0m",
+            SiteStatus::Other =>
+                "\x1b[90m[ ❓ OTHER ]\x1b[0m",
         };
-        write!(f, "{}", s)
+
+        write!(f, "{s}")
     }
 }
 
-     
