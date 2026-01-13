@@ -1,6 +1,7 @@
 use std::io::Write;
 use std::path;
 use std::fs;
+use std::time;
 
 use anyhow;
 use chrono;
@@ -27,12 +28,17 @@ impl App {
     }
 
     pub async fn run(&self) -> Vec<web::CheckResult>{
+        let time = std::time::Instant::now();
+
         let results = self.checker.check_all_sites().await;
-        self.logging(&results);
+
+        let duration = time.elapsed();
+
+        self.logging(&results,duration);
         results
     }
 
-    fn logging(&self,results: &[web::CheckResult]) {
+    fn logging(&self,results: &[web::CheckResult],duration: std::time::Duration) {
         fs::create_dir_all("logs").ok();
 
         let now = chrono::Local::now();
@@ -49,6 +55,25 @@ impl App {
 
             file.write_all(line.as_bytes()).ok();
         }
+
+        let total = results.len();
+        let available = results.iter().filter(|r| matches!(r.status(),web::model::SiteStatus::Available)).count();
+        let timeout = results.iter().filter(|r| matches!(r.status(),web::model::SiteStatus::Timeout)).count();
+        let errors = total - available;
+
+        let summary = format!(
+            "\n===== Summary =====\n\
+            Total sites: {}\n\
+            ✅ Available: {}\n\
+            ⏱ Timeout: {}\n\
+            💥 Errors: {}\n\
+            Duration: {:.2?}\n\
+            ====================\n",
+            total, available, timeout, errors, duration
+        );
+
+       print!("{}",summary);
+       file.write_all(summary.as_bytes()).ok();
 
     }
     
