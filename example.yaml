@@ -1,0 +1,7 @@
+
+timeout: 1000
+
+sites:
+  - https://google.com
+  - https://youtube.com
+
