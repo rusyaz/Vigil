@@ -14,8 +14,7 @@ async fn main() -> anyhow::Result<()> {
     let result = app.run().await;
 
     for rs in result {
-        println!();
-        println!("{rs}");
+        println!("\n{rs}");
     } 
     
     Ok(())

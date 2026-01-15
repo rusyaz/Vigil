@@ -1,7 +1,6 @@
 use std::io::Write;
 use std::path;
 use std::fs;
-use std::time;
 
 use anyhow;
 use chrono;
@@ -74,7 +73,5 @@ impl App {
 
        print!("{}",summary);
        file.write_all(summary.as_bytes()).ok();
-
     }
-    
 }

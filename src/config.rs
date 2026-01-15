@@ -39,10 +39,8 @@ impl Config {
         }
         Ok(())
     } 
-
+    
     pub fn into_parts(self) -> (Vec<String>,u64) {
         (self.sites,self.timeout)
     } 
-
-    
 }
